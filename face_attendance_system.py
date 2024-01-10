@@ -100,6 +100,8 @@ def getFrameAfterRecognition(frame):
 def attend(person):
     j=0
     while True:
+        if person == "Unknown":
+            break
         attendace_file  = "csv/attendace_report.xlsx"
         attendace_wb = openpyxl.load_workbook(filename=attendace_file)
         attendace_sheet = attendace_wb.active
@@ -124,6 +126,8 @@ def attend(person):
 def left(person):
     j=0
     while True:
+        if person == "Unknown":
+            break
         attendace_file  = "csv/attendace_report.xlsx"
         attendace_wb = openpyxl.load_workbook(filename=attendace_file)
         attendace_sheet = attendace_wb.active
@@ -169,20 +173,19 @@ def can_leave(person):
 
 if __name__ == "__main__":
     entrance_camera = cv2.VideoCapture(0)
-    # exit_camera = cv2.VideoCapture(1)
+    exit_camera = cv2.VideoCapture(1)
     while True:
         # Grab a single frame of video
         _, entrance_frame = entrance_camera.read()
-        # _, exit_frame = exit_camera.read()
+        _, exit_frame = exit_camera.read()
 
-        # entrance_frame, enter_people = getFrameAfterRecognition(entrance_frame)
-        entrance_frame, exit_people = getFrameAfterRecognition(entrance_frame)
-        # exit_frame, exit_people = getFrameAfterRecognition(exit_frame)
+        entrance_frame, enter_people = getFrameAfterRecognition(entrance_frame)
+        exit_frame, exit_people = getFrameAfterRecognition(exit_frame)
 
-        # for person in enter_people:
-        #     if can_attend(person):
-        #         attend(person)
-        #         print(f"Attended: {person}")
+        for person in enter_people:
+            if can_attend(person):
+                attend(person)
+                print(f"Attended: {person}")
         
         for person in exit_people:
             if can_leave(person):
@@ -190,7 +193,7 @@ if __name__ == "__main__":
                 print(f"Left: {person}")
 
         cv2.imshow('Entrance Video', entrance_frame)
-        # cv2.imshow('Exit Video', exit_frame)
+        cv2.imshow('Exit Video', exit_frame)
 
         # Hit 'q' on the keyboard to quit!
         if cv2.waitKey(1) & 0xFF == ord('q'):
