@@ -1,0 +1,7 @@
+scan network app: Fing - installed at the mobile to figure out the ip address of the raspberry pi
+Remote access desktop: RealVNC View - installed at the laptop
+password: pi
+
+Commands to run the system:
+cd FaceGate
+myenv/bin/python face_attendance_system.py
